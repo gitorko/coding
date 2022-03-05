@@ -1,5 +1,7 @@
 package com.demo.coding.common;
 
+import java.util.Objects;
+
 public class TreeNode<T extends Comparable<?>> {
     public Integer val;
     public TreeNode left;
@@ -12,28 +14,16 @@ public class TreeNode<T extends Comparable<?>> {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((val == null) ? 0 : val.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TreeNode<?> treeNode = (TreeNode<?>) o;
+        return Objects.equals(val, treeNode.val);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        TreeNode other = (TreeNode) obj;
-        if (val == null) {
-            if (other.val != null)
-                return false;
-        } else if (!val.equals(other.val))
-            return false;
-        return true;
+    public int hashCode() {
+        return Objects.hash(val);
     }
 
     @Override

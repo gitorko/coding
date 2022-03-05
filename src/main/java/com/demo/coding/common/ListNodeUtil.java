@@ -15,6 +15,9 @@ public class ListNodeUtil {
     }
 
     public static ListNode create(List<Integer> arr) {
+        if (arr == null || arr.size() == 0) {
+            return null;
+        }
         ListNode rootNode = new ListNode(arr.get(0));
         ListNode previousNode = rootNode;
         for (int i = 1; i < arr.size(); i++) {
@@ -26,6 +29,9 @@ public class ListNodeUtil {
     }
 
     public static int[] toArray(ListNode rootNode) {
+        if (rootNode == null) {
+            return new int[]{};
+        }
         List<Integer> result = new ArrayList<>();
         ListNode tmp = rootNode;
         result.add(tmp.val);
@@ -38,6 +44,9 @@ public class ListNodeUtil {
     }
 
     public static void display(ListNode rootNode) {
+        if (rootNode == null) {
+            return;
+        }
         ListNode tmp = rootNode;
         System.out.print(tmp.val);
         tmp = tmp.next;

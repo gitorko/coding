@@ -64,18 +64,32 @@ public class TreeNodeUtil {
         Queue<TreeNode> q = new LinkedList<>();
         q.add(root);
         while (!q.isEmpty()) {
-            root = q.poll();
-            numLst.add(root.val);
-            if (root.left != null) {
-                q.add(root.left);
-            }
-            if (root.right != null) {
-                q.add(root.right);
-            }
+            int size = q.size();
+            while (size > 0) {
+                root = q.poll();
+                if (root == null) {
+                    numLst.add(null);
+                } else {
+                    numLst.add(root.val);
+                    if (root.left == null && root.right != null) {
+                        q.add(null);
+                    }
+                    if (root.left != null) {
+                        q.add(root.left);
+                    }
 
-            if (root.left != null || root.right != null) {
-                numLst.add(null);
+                    if (root.right == null && root.left != null) {
+                        q.add(null);
+                    }
+                    if (root.right != null) {
+                        q.add(root.right);
+                    }
+                }
+                size--;
             }
+        }
+        if (numLst.get(numLst.size() - 1) == null) {
+            numLst.remove(numLst.size() - 1);
         }
         return numLst;
     }

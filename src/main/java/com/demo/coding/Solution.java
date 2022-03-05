@@ -1,26 +1,41 @@
 package com.demo.coding;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.JUnitCore;
-import org.junit.runner.Result;
-import org.junit.runner.notification.Failure;
+import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
+
+import java.util.List;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.launcher.Launcher;
+import org.junit.platform.launcher.LauncherDiscoveryRequest;
+import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
+import org.junit.platform.launcher.core.LauncherFactory;
+import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
+import org.junit.platform.launcher.listeners.TestExecutionSummary;
 
 public class Solution {
 
     @Test
     public void testNoop() {
-        Assert.assertTrue(true);
+        Assertions.assertTrue(true);
     }
 
-    public static void main(String[] args) {
-        Result result = JUnitCore.runClasses(Solution.class);
-        System.out.println("Total number of tests " + result.getRunCount());
-        System.out.println("Total number of tests failed " + result.getFailureCount());
-        for (Failure failure : result.getFailures()) {
-            System.out.println(failure.toString());
-        }
-        System.out.println(result.getFailureCount());
+    public static void main(String args[]) {
+        LauncherDiscoveryRequest request =
+                LauncherDiscoveryRequestBuilder.request()
+                        .selectors(selectClass(Solution.class))
+                        .build();
+
+        Launcher launcher = LauncherFactory.create();
+        SummaryGeneratingListener listener = new SummaryGeneratingListener();
+
+        launcher.registerTestExecutionListeners(listener);
+        launcher.execute(request);
+
+        TestExecutionSummary summary = listener.getSummary();
+        List<TestExecutionSummary.Failure> failures = summary.getFailures();
+        failures.forEach(failure -> System.out.println("failure - " + failure.getException()));
+        System.out.println(summary.getTestsFailedCount());
     }
 
 }

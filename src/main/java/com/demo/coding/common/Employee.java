@@ -1,51 +1,65 @@
 package com.demo.coding.common;
 
 import java.util.Comparator;
+import java.util.Objects;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-
-@Builder
-@AllArgsConstructor
-@Data
 public class Employee implements Comparable<Employee> {
 
     public String name;
     public Integer age;
+    private String city;
+
+    public Employee(String name, Integer age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public Employee(String name, Integer age, String city) {
+        this.name = name;
+        this.age = age;
+        this.city = city;
+    }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof Employee)) {
-            return false;
-        }
-        Employee emp = (Employee) obj;
-
-        if (!this.name.equals(emp.name)) {
-            return false;
-        }
-        if (this.age != emp.age) {
-            return false;
-        }
-
-        if (this.name.equals(emp.name)) {
-            return this.age.equals(emp.age);
-        } else {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(name, employee.name) && Objects.equals(age, employee.age);
     }
 
     @Override
     public int hashCode() {
-        return this.name.hashCode() * this.age.hashCode();
+        return Objects.hash(name, age);
     }
 
     @Override
     public int compareTo(Employee o) {
         return o.age.compareTo(this.age) + o.name.compareTo(this.name);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public static class EmployeeAgeComparator implements Comparator<Employee> {
